@@ -1,10 +1,9 @@
-package PACKAGE_NAME;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class SimpleChatClient {
 
@@ -23,7 +22,7 @@ public class SimpleChatClient {
 
         JFrame frame = new JFrame("Ludicrously Simple Chat Client");
         JPanel mainPanel = new JPanel();
-        incoming = new JTextArea(15, 50);
+        incoming = new JTextArea(15, 30);
         incoming.setLineWrap(true);
         incoming.setWrapStyleWord(true);
         incoming.setEditable(false);
@@ -43,8 +42,10 @@ public class SimpleChatClient {
         setUpNetworking();
 
         Thread readerThread = new Thread(new IncomingReader());
+        readerThread.start();
+
         frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
-        frame.setSize(400, 500);
+        frame.setSize(500, 500);
         frame.setVisible(true);
     }
 
@@ -66,7 +67,7 @@ public class SimpleChatClient {
             try {
 
                 while ((message = reader.readLine()) != null) {
-                    System.out.println("read " + message);
+                    System.out.println("read from server: " + message);
                     incoming.append(message + "\n");
                 }
             } catch (IOException e) {e.printStackTrace();}
